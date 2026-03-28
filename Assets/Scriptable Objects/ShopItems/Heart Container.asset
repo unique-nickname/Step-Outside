@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e416da6990a463647be5137a3b0b8984, type: 3}
+  m_Name: Heart Container
+  m_EditorClassIdentifier: Assembly-CSharp::BasicItem
+  description: Increases max health by one!
+  type: 1
+  price: 35
+  id: 0
+  weight: 2
+  sprite: {fileID: 4445796971750186690, guid: f49d608886be9094794ed2ceafff4350, type: 3}
