@@ -36,6 +36,8 @@ public class EnemySpawner : MonoBehaviour
 
     public TMP_Text timer;
 
+    public static Action playerOutside;
+
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform; 
@@ -97,8 +99,10 @@ public class EnemySpawner : MonoBehaviour
 
     void IsPlayerOutofBounds()
     {
-        if (player.position.x > 10 || player.position.x < -10 || player.position.y > 8 || player.position.y < -8)
+        if (player.position.x > 10 || player.position.x < -10 || player.position.y > 8 || player.position.y < -8) {
             timeMultiplier = timeMultiplierOut;
+            playerOutside?.Invoke();
+        }
         else 
             timeMultiplier = 1f;
     }

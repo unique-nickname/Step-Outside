@@ -24,6 +24,7 @@ public class MenuManager : MonoBehaviour
 
     public List<GameObject> gameUI = new();
     public static event Action GameStarted;
+    public static event Action ResumeGame;
 
     private void Start()
     {
@@ -138,6 +139,7 @@ public class MenuManager : MonoBehaviour
         CloseCurrentMenu();
         playerShooting.canShoot = true;
         Time.timeScale = 1f;
+        ResumeGame?.Invoke();
     }
 
     private void ShowWin()
