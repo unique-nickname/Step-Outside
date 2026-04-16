@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
         input.Player.Pause.performed += _ => paused?.Invoke();
 
         input.Player.Melee.performed += _ => melee.UseMelee();
+
+        input.Player.UseShockwave.performed += _ => shooting.UseShockwave();
     }
 
     private void OnDisable()

@@ -1,11 +1,7 @@
-using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.AdaptivePerformance.Provider.AdaptivePerformanceSubsystemDescriptor;
-using static UnityEngine.GraphicsBuffer;
 
 public enum BossState
 {
@@ -328,7 +324,7 @@ public class BossCore : MonoBehaviour, IDamageable
 
         GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().target = transform;
 
-        Destroy(GameObject.Find("BossBoundary(Clone)"));
+        Destroy(GameObject.FindGameObjectWithTag("BossBoundary"));
 
         AudioManager.Instance.PlaySFX(4, 0.8f, 1);
         Instantiate(shockwaveEffect, pivotPos, Quaternion.Euler(-90f, 0f, 0f));

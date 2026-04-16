@@ -17,7 +17,7 @@ MonoBehaviour:
   bulletSpeed: 7.5
   automatic: 1
   bulletAmount: 1
-  spread: 0
+  spread: 3
   id: 1
   bulletPrefab: {fileID: 8177791728864334704, guid: aa70ff22555effa4fa64711800f7c879, type: 3}
   bulletType: 0

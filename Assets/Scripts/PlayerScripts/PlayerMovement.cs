@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Basic Settings")]
     private Rigidbody2D rb;
     public Vector2 moveInput;
-    [SerializeField] private float moveSpeed = 5f;
+    public float moveSpeed = 5f;
     public bool canMove = false;
 
     [Header("Dash Settings")]
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private int maxCharges = 2;
-    [SerializeField] private float rechargeTime = 1f;
+    public float rechargeTime = 1f;
     private float rechargeTimer, dashTimeLeft;
     private int charges;
     private bool isDashing;

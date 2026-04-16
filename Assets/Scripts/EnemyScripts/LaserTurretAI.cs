@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LaserTurretAI : EnemyAI
@@ -109,6 +110,7 @@ public class LaserTurretAI : EnemyAI
             timer += Time.deltaTime;
             yield return null;
         }
+        firstPlayed = secondPlayed = thirdPlayed = false;
 
         // Remove guide and fire actual laser
         guideRenderer.positionCount = 0;
@@ -190,7 +192,25 @@ public class LaserTurretAI : EnemyAI
 
             Collider2D[] hits = Physics2D.OverlapBoxAll(center, new Vector2(length, thickness), angle, damageMask);
 
-            foreach (Collider2D col in hits) {
+            bool hitPlayer = hits.Any(h => h.CompareTag("Player"));
+            bool hitForcefield = hits.Any(h => h.CompareTag("SlimeForcefield"));
+
+            Debug.Log("Hit: " + hitPlayer + " " + hitForcefield);
+
+            if (hitPlayer && hitForcefield) {
+                foreach (var col in hits) {
+                    if (col.CompareTag("SlimeForcefield")) {
+                        IDamageable damageable = col.GetComponent<IDamageable>();
+                        var hitPoint = (Vector2)col.transform.position;
+                        var info = new DamageInfo(attackDamage, hitPoint, Vector2.zero, gameObject, DamageType.Laser);
+                        damageable.TakeDamage(info);
+                    }
+                }
+
+                return;
+            }
+
+            foreach (var col in hits) {
                 IDamageable damageable = col.GetComponent<IDamageable>();
                 if (damageable != null) {
                     var hitPoint = (Vector2)col.transform.position;
@@ -198,6 +218,7 @@ public class LaserTurretAI : EnemyAI
                     damageable.TakeDamage(info);
                 }
             }
+            
         }
     }
 }

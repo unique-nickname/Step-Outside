@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Collections;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -22,13 +23,18 @@ public class InventoryManager : MonoBehaviour
     [Header("Items")]
     public int Gold;
 
-    public List<BasicItem> allHealItems = new();
-    public List<BasicItem> allPermBuffs = new();
-    public List<BasicItem> allTempBuffs = new();
-    public List<BasicItem> allAbilites = new();
+    private List<BasicItem> allHealItems = new();
+    private List<BasicItem> allPermBuffs = new();
+    private List<BasicItem> allTempBuffs = new();
+    private List<BasicItem> allAbilites = new();
     public List<BasicGun> allGuns = new();
 
+    public BasicItem postDashPurchase;
+
     private int quickPillPurchases;
+    private int corePurchases;
+
+    public static event Action<int, int> GunsUpdated;
 
     private void Awake()
     {
@@ -83,10 +89,17 @@ public class InventoryManager : MonoBehaviour
 
         playerMovement.hasDash = false;
         playerMelee.canParry = false;
+        playerShooting.canUseShockwave = false;
 
         playerShooting.guns[0] = allGuns[0];
         playerShooting.guns[1] = null;
         playerShooting.SwitchGun(0);
+
+        playerMovement.moveSpeed = 5f;
+
+        playerMelee.damage = 2;
+        playerMelee.size = 1f;
+        playerMelee.cooldown = 0.5f;
 
         playerHealth.SetMaxHealth(4);
         playerHealth.Initialize();
@@ -129,6 +142,7 @@ public class InventoryManager : MonoBehaviour
                 ApplyPermBuff(id);
                 break;
             case ItemType.TempBuff:
+                ApplyTempBuff(id);
                 break;
             case ItemType.Ability:
                 ActivateAbility(id);
@@ -153,9 +167,14 @@ public class InventoryManager : MonoBehaviour
                 playerMovement.hasDash = true;
                 shopManager.allItems.Remove(allAbilites[id]);
                 featherManager.SetActive(true);
+                shopManager.allItems.Add(postDashPurchase);
                 break;
             case 1: // Parry
                 playerMelee.canParry = true;
+                shopManager.allItems.Remove(allAbilites[id]);
+                break;
+            case 2: // Shockwave
+                playerShooting.canUseShockwave = true;
                 shopManager.allItems.Remove(allAbilites[id]);
                 break;
         }
@@ -166,12 +185,13 @@ public class InventoryManager : MonoBehaviour
         if (playerShooting.guns[1] == null) {
             playerShooting.guns[1] = allGuns[id];
             playerShooting.SwitchGun(1);
+            GunsUpdated?.Invoke(1, id);
         } 
         else {
             playerShooting.guns[playerShooting.weaponSelected] = allGuns[id];
             playerShooting.SwitchGun(playerShooting.weaponSelected);
+            GunsUpdated?.Invoke(playerShooting.weaponSelected, id);
         }
-        // Add other stuff here
     }
 
     void ApplyPermBuff(int id)
@@ -194,7 +214,54 @@ public class InventoryManager : MonoBehaviour
                     shopManager.allItems.Remove(allPermBuffs[id]);
                 }
                 break;
+            case 4:
+                playerShooting.switchUnlocked = true;
+                shopManager.allItems.Remove(allPermBuffs[id]);
+                break;
+            case 5:
+                playerMovement.moveSpeed += 0.5f;
+                break;
+            case 6:
+                playerMovement.rechargeTime -= 0.1f;
+                if (playerMovement.rechargeTime == 0.1f) {
+                    shopManager.allItems.Remove(allPermBuffs[id]);
+                }
+                break;
+            case 7:
+                corePurchases++;
+                if (corePurchases == 3) {
+                    playerShooting.damageMultiplier += 0.5f;
+                    shopManager.allItems.Remove(allPermBuffs[id]);
+                }
+                break;
         }
     }
 
+    void ApplyTempBuff(int id) 
+    {
+        switch (id) {
+
+            case 0:
+                StartCoroutine(AleApply());
+                break;
+
+            case 1:
+                playerHealth.CreateForcefield();
+                break;
+
+        }
+    }
+
+    IEnumerator AleApply()
+    {
+        playerHealth.damageMultiplier = 2f;
+        playerMelee.damageMultiplier = 2f;
+        playerShooting.damageMultiplier += 1f;
+
+        yield return new WaitForSeconds(30f);
+
+        playerHealth.damageMultiplier = 1f;
+        playerMelee.damageMultiplier = 1f;
+        playerShooting.damageMultiplier -= 1f;
+    }
 }

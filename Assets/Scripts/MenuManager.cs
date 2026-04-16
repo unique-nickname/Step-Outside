@@ -25,6 +25,7 @@ public class MenuManager : MonoBehaviour
     public List<GameObject> gameUI = new();
     public static event Action GameStarted;
     public static event Action ResumeGame;
+    public static event Action Paused;
 
     private void Start()
     {
@@ -122,8 +123,13 @@ public class MenuManager : MonoBehaviour
 
     public void Pause()
     {
+        if (currentPanel == mainMenuPanel || currentPanel == optionsPanel || currentPanel == gameOverPanel || currentPanel == winPanel)
+            return;
+        Paused?.Invoke();
         if (currentPanel == pausePanel) {
-            Resume();
+            CloseCurrentMenu();
+            playerShooting.canShoot = true;
+            Time.timeScale = 1f;
             return;
         }
         HideAll();

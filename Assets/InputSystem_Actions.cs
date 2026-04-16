@@ -163,6 +163,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseShockwave"",
+                    ""type"": ""Button"",
+                    ""id"": ""5077caba-dc4e-4e9e-aee6-c6c6cfee6514"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -297,6 +306,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Melee"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a53b573-c333-4c19-812b-70309f8bc3fc"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseShockwave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -374,6 +394,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_Melee = m_Player.FindAction("Melee", throwIfNotFound: true);
+        m_Player_UseShockwave = m_Player.FindAction("UseShockwave", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -462,6 +483,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_Melee;
+    private readonly InputAction m_Player_UseShockwave;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -505,6 +527,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Melee".
         /// </summary>
         public InputAction @Melee => m_Wrapper.m_Player_Melee;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/UseShockwave".
+        /// </summary>
+        public InputAction @UseShockwave => m_Wrapper.m_Player_UseShockwave;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -555,6 +581,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Melee.started += instance.OnMelee;
             @Melee.performed += instance.OnMelee;
             @Melee.canceled += instance.OnMelee;
+            @UseShockwave.started += instance.OnUseShockwave;
+            @UseShockwave.performed += instance.OnUseShockwave;
+            @UseShockwave.canceled += instance.OnUseShockwave;
         }
 
         /// <summary>
@@ -590,6 +619,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Melee.started -= instance.OnMelee;
             @Melee.performed -= instance.OnMelee;
             @Melee.canceled -= instance.OnMelee;
+            @UseShockwave.started -= instance.OnUseShockwave;
+            @UseShockwave.performed -= instance.OnUseShockwave;
+            @UseShockwave.canceled -= instance.OnUseShockwave;
         }
 
         /// <summary>
@@ -751,5 +783,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMelee(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "UseShockwave" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUseShockwave(InputAction.CallbackContext context);
     }
 }

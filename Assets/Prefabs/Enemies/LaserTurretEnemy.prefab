@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 7348921469843007383}
   - component: {fileID: -8746886041502005631}
   - component: {fileID: 1778768153342561454}
+  - component: {fileID: -5172909218290705464}
   m_Layer: 7
   m_Name: LaserTurretEnemy
   m_TagString: Enemy
@@ -291,6 +292,7 @@ MonoBehaviour:
   deathEffect: {fileID: 2814244771061068395, guid: 15954754c8c21c947ae63b7c1321596e, type: 3}
   gatherEffect: {fileID: 555279423771680461, guid: c9e7e7e1be1f52c4c8b3ed9f84ca39b7, type: 3}
   isSplitter: 0
+  splitedEnemy: 0
 --- !u!114 &7348921469843007383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,7 +318,7 @@ MonoBehaviour:
   timeAfterLock: 1
   damageMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   bounces: 2
   duration: 1
   thickness: 0.15
@@ -453,3 +455,30 @@ MonoBehaviour:
   holdWhiteTime: 0.05
   fadeBackTime: 0.25
   fadePerm: 0.05
+--- !u!50 &-5172909218290705464
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6650491550936980332}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 7

@@ -4,7 +4,8 @@ public enum BulletType
 {
     Basic,
     Explosive,
-    Raycast
+    Raycast,
+    Returning
 }
 
 [CreateAssetMenu(fileName = "BasicGun", menuName = "Scriptable Objects/BasicGun")]

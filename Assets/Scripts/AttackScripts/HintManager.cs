@@ -29,7 +29,7 @@ public class HintManager : MonoBehaviour
         MenuManager.GameStarted += GameStarted;
         MenuManager.ResumeGame += PauseAndResume;
         PlayerHealth.OnDied += PlayerDied;
-        PlayerController.paused += PauseAndResume;
+        MenuManager.Paused += PauseAndResume;
         EnemySpawner.playerOutside += ShowThirdHint;
     }
 
@@ -38,7 +38,7 @@ public class HintManager : MonoBehaviour
         MenuManager.GameStarted -= GameStarted;
         MenuManager.ResumeGame -= PauseAndResume;
         PlayerHealth.OnDied -= PlayerDied;
-        PlayerController.paused -= PauseAndResume;
+        MenuManager.Paused -= PauseAndResume;
         EnemySpawner.playerOutside -= ShowThirdHint;
     }
 
@@ -48,6 +48,11 @@ public class HintManager : MonoBehaviour
             return;
 
         timer += Time.deltaTime;
+        if (thirdHintDone && timer > timeTillThirdHintDestroyed) {
+            Destroy(currentHint);
+        }
+        if (thirdHintDone)
+            return;
 
         if (timer > firstHintStartTime && !firstHintDone) {
             currentHint = Instantiate(hintPrefab, canvas);
@@ -64,10 +69,6 @@ public class HintManager : MonoBehaviour
             secondHintDone = true;
         }
         if (timer > secondHintEndTime && !thirdHintDone) {
-            Destroy(currentHint);
-        }
-
-        if(thirdHintDone && timer > timeTillThirdHintDestroyed) {
             Destroy(currentHint);
         }
 

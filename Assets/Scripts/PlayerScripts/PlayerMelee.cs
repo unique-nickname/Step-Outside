@@ -8,6 +8,7 @@ public class PlayerMelee : MonoBehaviour
     [SerializeField] private float hitboxDuration;
     public float cooldown;
     public int damage;
+    public float damageMultiplier = 1f;
 
     [SerializeField] private float slashOffset;
 
@@ -40,7 +41,7 @@ public class PlayerMelee : MonoBehaviour
         newSlash.transform.localScale = Vector3.one * size;
         newSlash.tag = "PlayerBullet";
         SlashScript script = newSlash.GetComponent<SlashScript>();
-        script.damage = damage;
+        script.damage = Mathf.CeilToInt(damage * damageMultiplier);
         script.size = new Vector2(0.75f * size, 1.8f * size); // Hardcoded values for now
         script.duration = hitboxDuration;
         script.angle = gun.eulerAngles.z;

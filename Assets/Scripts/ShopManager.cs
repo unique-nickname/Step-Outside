@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class ShopManager : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class ShopManager : MonoBehaviour
     public float GoldMultiplier { get; private set; }
     
     public TMP_Text goldMultiplier;
+    public TMP_Text slotUnlockedText;
 
     [SerializeField] private List<GameObject> slots = new();
     private List<BasicItem> rolledSlots = new();
@@ -41,6 +44,16 @@ public class ShopManager : MonoBehaviour
         playerShooting = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerShooting>();
 
         staticAllItems = allItems;
+    }
+
+    public void OnEnable()
+    {
+        EnemySpawner.UnlockSlot += UnlockSlot;
+    }
+
+    public void OnDisable()
+    {
+        EnemySpawner.UnlockSlot -= UnlockSlot;
     }
 
     public void Initialize()
@@ -85,6 +98,14 @@ public class ShopManager : MonoBehaviour
             GoldMultiplier = Mathf.Clamp(GoldMultiplier, 1f, GoldMultiplierMax);
         }
         goldMultiplier.text = GoldMultiplier.ToString("F1") + "x";
+    }
+
+    void UnlockSlot()
+    {
+        slots.Add(null);
+        rolledSlots.Add(null);
+
+        StartCoroutine(SlotUnlockedText());
     }
 
     void RotateItems()
@@ -153,4 +174,21 @@ public class ShopManager : MonoBehaviour
         return allItems[allItems.Count - 1];
     }
 
+    IEnumerator SlotUnlockedText()
+    {
+        slotUnlockedText.alpha = 1f;
+
+        yield return new WaitForSeconds(1f);
+
+        float elapsed = 0f;
+        float duration = 1f;
+
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            slotUnlockedText.alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+            yield return null;
+        }
+
+        slotUnlockedText.alpha = 0f;
+    }
 }

@@ -10,6 +10,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private int maxHealth = 4;
     [SerializeField] private float invulnSeconds = 0.75f;
 
+    public float damageMultiplier = 1f;
+
+    public GameObject forceFieldPrefab;
+
     private SpriteFlashEffect flasher;
     public GameObject deathEffect;
 
@@ -57,7 +61,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         AudioManager.Instance.PlaySFX(2, 0.9f, 1);
 
-        CurrentHealth -= info.amount;
+        CurrentHealth -= Mathf.CeilToInt(info.amount * damageMultiplier);
         invulnUntil = Time.time + invulnSeconds;
 
         OnDamaged?.Invoke(info);
@@ -118,7 +122,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             yield return null;
         }
 
-        
         GetComponent<SpriteRenderer>().enabled = false;
 
         yield return new WaitForSeconds(2.5f);
@@ -127,4 +130,15 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         gameObject.SetActive(false);
     }
 
+    public void CreateForcefield()
+    {
+        var forcefield = Instantiate(forceFieldPrefab, transform.position, Quaternion.identity, transform);
+        forcefield.GetComponent<SlimeForcefield>().player = this;
+    }
+
+    public void StartInvulnerability()
+    {
+        invulnUntil = Time.time + invulnSeconds;
+        StartCoroutine(InvulnerabilityFlash());
+    }
 }

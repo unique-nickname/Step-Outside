@@ -47,8 +47,12 @@ public class BasicBullet : MonoBehaviour
 
         target.TakeDamage(info);
 
-        Instantiate(breakParticle, hitPoint, Quaternion.identity);
+        Break();
+    }
 
+    public void Break()
+    {
+        Instantiate(breakParticle, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
